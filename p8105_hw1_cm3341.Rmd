@@ -2,7 +2,9 @@
 title: "p8105_hw1_cm3341"
 author: "Carolina Montes Garcia"
 date: "2024-09-17"
-output: html_document
+output: 
+  github_document:
+    toc: true 
 ---
 
 ```{r setup, include=FALSE}
