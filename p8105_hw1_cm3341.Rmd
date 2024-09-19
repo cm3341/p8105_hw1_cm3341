@@ -5,28 +5,56 @@ date: "2024-09-17"
 output: 
   github_document:
     toc: true 
+editor_options: 
+  chunk_output_type: console
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, echo = FALSE}
+install.packages("palmerpenguins")
+
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+##Load packages that I need for tidyverse functions and plotting
+```{r}
+library(tidyverse)
+library(ggplot2)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+## Problem 1
+The 'penguins' dataset includes bill length and flipper length of three different species of penguin - Adelie, Chinstrap, and Gentoo. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+    the data in this dataset, including names / values of important variables
+    the size of the dataset (using nrow and ncol)
+    the mean flipper length
+
+
+
+```{r}
+data("penguins", package = "palmerpenguins")
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Scatterplot of flipper length vs. bill length
+```{r}
+ggplot(
+  penguins, aes(
+    x = bill_length_mm, 
+    y = flipper_length_mm, 
+    color = species)) +
+  geom_point() +
+  labs(
+    title = "Flipper Length vs Bill Length", x = "Bill Length (mm)", y = "Flipper Length (mm)") +
+  theme_minimal()
+
+ggsave("flipper_vs_bill_length.png")
+```
+
+
+## Problem 2
+
+```{r}
+
+```
+
