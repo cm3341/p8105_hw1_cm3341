@@ -9,34 +9,39 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r, echo = FALSE}
-install.packages("palmerpenguins")
+Load tidyverse for its functions, tidy syntax, tibbles, and because it includes ggplot2
 
-```
-
-##Load packages that I need for tidyverse functions and plotting
 ```{r}
 library(tidyverse)
-library(ggplot2)
 ```
 
 
 ## Problem 1
-The 'penguins' dataset includes bill length and flipper length of three different species of penguin - Adelie, Chinstrap, and Gentoo. 
-
-    the data in this dataset, including names / values of important variables
-    the size of the dataset (using nrow and ncol)
-    the mean flipper length
-
-
+The 'penguins' dataset includes 344 entries of bill measurements, flipper measurements, body mass in grams, sex, and the year of measurement for three different species of penguin - Adelie, Chinstrap, and Gentoo. 
 
 ```{r}
 data("penguins", package = "palmerpenguins")
 
+dataset_size = penguins %>%
+  summarise(rows = n(), columns = ncol(penguins))
+
+dataset_size
+```
+
+
+```{r}
+mean_flipper_length = penguins %>%
+  summarise(mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE))
+
+mean_flipper_length
+```
+
+
+```{r}
 
 ```
 
-## Scatterplot of flipper length vs. bill length
+### Scatterplot of flipper length vs. bill length
 ```{r}
 ggplot(
   penguins, aes(
@@ -54,7 +59,24 @@ ggsave("flipper_vs_bill_length.png")
 
 ## Problem 2
 
+Set seed for reproducibility purposes
 ```{r}
+set.seed(123)
+```
+
+Create dataframe
+```{r}
+example_data = data.frame(
+  normal_sample = rnorm(10),
+  greater_than_zero = rnorm(10) > 0,
+  char_vector = letters[1:10],
+  factor_vector = factor(sample(c("fun level", "ugly level", "evil level"), 10, replace = TRUE))
+)
+```
+
+Mean of each dataframe variable
+```{r}
+
 
 ```
 
