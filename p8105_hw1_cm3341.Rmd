@@ -1,10 +1,10 @@
 ---
 title: "p8105_hw1_cm3341"
 author: "Carolina Montes Garcia"
-date: "2024-09-17"
+date: "2024-09-21"
 output: 
   github_document:
-    toc: true 
+    toc: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -17,6 +17,7 @@ library(tidyverse)
 
 
 ## Problem 1
+Load the `penguins` dataset and obtain the summary values using the `summarise` function.
 
 ```{r}
 data("penguins", package = "palmerpenguins")
@@ -32,9 +33,10 @@ mean_flipper_length = penguins %>%
     mean_flipper_length_mm = mean(
       flipper_length_mm, na.rm = TRUE)
     )
+
 ```
 
-*The `penguins` dataset includes bill measurements, flipper measurements, body mass in grams, sex, the year of measurement, and the corresponding island for three different species of penguin, Adelie, Chinstrap, and Gentoo.
+*The `penguins` dataset includes bill measurements, flipper measurements, body mass in grams, sex, the year of measurement, and the corresponding island for three different species of penguin: Adelie, Chinstrap, and Gentoo.
 
 *The data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows.
 
@@ -42,7 +44,6 @@ mean_flipper_length = penguins %>%
 
 
 **Scatterplot of flipper length vs. bill length**
-
 
 ```{r message = FALSE, warning=FALSE}
 ggplot(
@@ -52,7 +53,9 @@ ggplot(
     color = species)) +
   geom_point() +
   labs(
-    title = "Flipper Length vs Bill Length", x = "Bill Length (mm)", y = "Flipper Length (mm)") +
+    title = "Flipper Length vs Bill Length", 
+    x = "Bill Length (mm)", 
+    y = "Flipper Length (mm)") +
   theme_minimal()
 
 ggsave("flipper_vs_bill_length.png")
@@ -61,7 +64,7 @@ ggsave("flipper_vs_bill_length.png")
 
 ## Problem 2
 
-Setting a seed for sampling consistency and reproducibility
+Setting a seed for sampling consistency and reproducibility. Otherwise, I'd get different entries in the dataframe every time I run the code. 
 ```{r}
 set.seed(123)
 ```
@@ -76,31 +79,38 @@ example_data = data.frame(
   factor_vector = factor(sample(c("fun level", "ugly level", "evil level"), 10, replace = TRUE))
 )
 
+head(example_data)
 ```
 
 Mean of each dataframe variable
 ```{r, warning = FALSE}
 
-mean_samp1 = mean(pull(example_data, norm_samp))
-mean_samp2 = mean(pull(example_data, norm_samp_pos))
-mean_samp3 = mean(pull(example_data, char_vector))
-mean_samp4 = mean(pull(example_data, factor_vector))
+mean_samp = mean(pull(example_data, norm_samp))
+mean_samp_pos = mean(pull(example_data, norm_samp_pos))
+mean_char = mean(pull(example_data, char_vector))
+mean_vector = mean(pull(example_data, factor_vector))
 
 ```
 
 *The mean of the random sample is `r mean(pull(example_data, norm_samp))`
 
-*The mean of the logical vector is `r mean(pull(example_data, norm_samp_pos))`, which is strange at first glance because the entries in the logical vector look like characters. However, R seems to treat *TRUE* as a *1* and *FALSE* as a *0* and so it calculates the mean based on the proportion of *TRUE* entries in the vector. 
+The mean of the logical vector is `r mean(pull(example_data, norm_samp_pos))`, which is strange at first glance because the entries in the logical vector look like characters. However, R seems to treat, *TRUE* as a *1* and *FALSE* as a *0* and so it calculates the mean based on the proportion of *TRUE* entries in the vector. 
 
 *The mean of the character vector is `r mean(pull(example_data, char_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
 
 *The mean of the factor vector is `r mean(pull(example_data, factor_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
 
 ```{r, eval = FALSE}
-example_data[, "norm_samp_pos"] <- as.numeric(df[, "norm_samp_pos"])
 
+example_data[["norm_samp_pos"]] <- as.numeric(example_data[["norm_samp_pos"]])
+example_data[["char_vector"]] <- as.numeric(example_data[["char_vector"]])
+example_data[["factor_vector"]] <- as.numeric(example_data[["factor_vector"]])
 
-num_norm_samp_pos = as.numeric(norm_samp_pos)
-
+head(example_data)
 ```
 
+When I convert the logical vector data to numeric data, the entries turn into *1s and *0s* which does make sense. It looks like logical data is logged as binary and so that is why in the calculation of the mean for logical data, there was an output of `r mean(pull(example_data, char_vector))`, though the entries in the column looked like categorical data.
+
+When I attempt to convert the character vector data into numeric data, I receive an *NAs introduced by coercion* message. I see that the entries in that column get turned into NAs. I would think that letters would count as ordinal data, because the alphabet has an order to it, but I guess R does not interpret letters as ordinal data and instead interprets it as nominal data, without any intrinsic order to it. So the `as.numeric` function can't really turn it into anything numerical. 
+
+When I convert the factor vector data to numeric data, the entries turn into *1s*, *2s*, and *3s*. R is picking up on the three levels that exist in this vector and coding them with corresponding numbers. The NA output when I tried to calculate the mean of the factor vector makes sense because the mean of categorical data as levels doesn't really mean anything. 
