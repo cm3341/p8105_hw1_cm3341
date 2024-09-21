@@ -17,34 +17,33 @@ library(tidyverse)
 
 
 ## Problem 1
-The 'penguins' dataset includes 344 entries of bill measurements, flipper measurements, body mass in grams, sex, and the year of measurement for three different species of penguin - Adelie, Chinstrap, and Gentoo. It also lists the island for each penguin. 
-
 
 ```{r}
 data("penguins", package = "palmerpenguins")
 
 dataset_size = penguins %>%
-  summarise(rows = n(), columns = ncol(penguins))
+  summarise(
+    rows = nrow(penguins), 
+    columns = ncol(penguins)
+    )
 
-dataset_size
-```
-
-The data set has `r ncol(penguins)` columns
-
-
-```{r}
 mean_flipper_length = penguins %>%
-  summarise(mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE))
-
-mean_flipper_length
+  summarise(
+    mean_flipper_length_mm = mean(
+      flipper_length_mm, na.rm = TRUE)
+    )
 ```
 
+*The `penguins` dataset includes bill measurements, flipper measurements, body mass in grams, sex, the year of measurement, and the corresponding island for three different species of penguin, Adelie, Chinstrap, and Gentoo.
 
-```{r}
+*The data set has `r ncol(penguins)` columns and `r nrow(penguins)` rows.
 
-```
+*The mean flipper length is `r mean_flipper_length` mm.
 
-Scatterplot of flipper length vs. bill length
+
+**Scatterplot of flipper length vs. bill length**
+
+
 ```{r message = FALSE, warning=FALSE}
 ggplot(
   penguins, aes(
@@ -80,7 +79,7 @@ example_data = data.frame(
 ```
 
 Mean of each dataframe variable
-```{r}
+```{r, warning = FALSE}
 
 mean_samp1 = mean(pull(example_data, norm_samp))
 mean_samp2 = mean(pull(example_data, norm_samp_pos))
@@ -95,7 +94,7 @@ mean_samp4 = mean(pull(example_data, factor_vector))
 
 *The mean of the character vector is `r mean(pull(example_data, char_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
 
-*The mean of the character vector is `r mean(pull(example_data, factor_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
+*The mean of the factor vector is `r mean(pull(example_data, factor_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
 
 ```{r, eval = FALSE}
 example_data[, "norm_samp_pos"] <- as.numeric(df[, "norm_samp_pos"])
