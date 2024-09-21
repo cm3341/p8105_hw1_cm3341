@@ -9,7 +9,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Load tidyverse for its functions, tidy syntax, tibbles, and because it includes ggplot2
+Load tidyverse for its functions, tidy syntax and operators, tibbles, and because it includes ggplot2.
 
 ```{r}
 library(tidyverse)
@@ -17,7 +17,8 @@ library(tidyverse)
 
 
 ## Problem 1
-The 'penguins' dataset includes 344 entries of bill measurements, flipper measurements, body mass in grams, sex, and the year of measurement for three different species of penguin - Adelie, Chinstrap, and Gentoo. 
+The 'penguins' dataset includes 344 entries of bill measurements, flipper measurements, body mass in grams, sex, and the year of measurement for three different species of penguin - Adelie, Chinstrap, and Gentoo. It also lists the island for each penguin. 
+
 
 ```{r}
 data("penguins", package = "palmerpenguins")
@@ -27,6 +28,8 @@ dataset_size = penguins %>%
 
 dataset_size
 ```
+
+The data set has `r ncol(penguins)` columns
 
 
 ```{r}
@@ -41,8 +44,8 @@ mean_flipper_length
 
 ```
 
-### Scatterplot of flipper length vs. bill length
-```{r}
+Scatterplot of flipper length vs. bill length
+```{r message = FALSE, warning=FALSE}
 ggplot(
   penguins, aes(
     x = bill_length_mm, 
@@ -59,24 +62,46 @@ ggsave("flipper_vs_bill_length.png")
 
 ## Problem 2
 
-Set seed for reproducibility purposes
+Setting a seed for sampling consistency and reproducibility
 ```{r}
 set.seed(123)
 ```
 
 Create dataframe
 ```{r}
+
 example_data = data.frame(
-  normal_sample = rnorm(10),
-  greater_than_zero = rnorm(10) > 0,
+  norm_samp = rnorm(10),
+  norm_samp_pos = rnorm(10) > 0,
   char_vector = letters[1:10],
   factor_vector = factor(sample(c("fun level", "ugly level", "evil level"), 10, replace = TRUE))
 )
+
 ```
 
 Mean of each dataframe variable
 ```{r}
 
+mean_samp1 = mean(pull(example_data, norm_samp))
+mean_samp2 = mean(pull(example_data, norm_samp_pos))
+mean_samp3 = mean(pull(example_data, char_vector))
+mean_samp4 = mean(pull(example_data, factor_vector))
+
+```
+
+*The mean of the random sample is `r mean(pull(example_data, norm_samp))`
+
+*The mean of the logical vector is `r mean(pull(example_data, norm_samp_pos))`, which is strange at first glance because the entries in the logical vector look like characters. However, R seems to treat *TRUE* as a *1* and *FALSE* as a *0* and so it calculates the mean based on the proportion of *TRUE* entries in the vector. 
+
+*The mean of the character vector is `r mean(pull(example_data, char_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
+
+*The mean of the character vector is `r mean(pull(example_data, factor_vector))`, which makes sense because one cannot calculate the mean of a categorical variable. 
+
+```{r, eval = FALSE}
+example_data[, "norm_samp_pos"] <- as.numeric(df[, "norm_samp_pos"])
+
+
+num_norm_samp_pos = as.numeric(norm_samp_pos)
 
 ```
 
