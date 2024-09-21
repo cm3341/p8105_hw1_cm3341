@@ -69,7 +69,7 @@ Setting a seed for sampling consistency and reproducibility. Otherwise, I'd get 
 set.seed(123)
 ```
 
-Create dataframe
+Create the dataframe comprised of a random sample, a logical vector indicating whether the elements of the sample are greater than 0, a character vector of length 10, and a logical vector with three levels. 
 ```{r}
 
 example_data = data.frame(
@@ -82,7 +82,7 @@ example_data = data.frame(
 head(example_data)
 ```
 
-Mean of each dataframe variable
+Calculate the mean of each dataframe variable
 ```{r, warning = FALSE}
 
 mean_samp = mean(pull(example_data, norm_samp))
@@ -92,7 +92,7 @@ mean_vector = mean(pull(example_data, factor_vector))
 
 ```
 
-*The mean of the random sample is `r mean(pull(example_data, norm_samp))`
+*The mean of the random sample is `r mean(pull(example_data, norm_samp))`, which makes sense because these are clearly numeric values.
 
 The mean of the logical vector is `r mean(pull(example_data, norm_samp_pos))`, which is strange at first glance because the entries in the logical vector look like characters. However, R seems to treat, *TRUE* as a *1* and *FALSE* as a *0* and so it calculates the mean based on the proportion of *TRUE* entries in the vector. 
 
