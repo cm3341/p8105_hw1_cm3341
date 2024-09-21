@@ -106,7 +106,6 @@ example_data[["norm_samp_pos"]] <- as.numeric(example_data[["norm_samp_pos"]])
 example_data[["char_vector"]] <- as.numeric(example_data[["char_vector"]])
 example_data[["factor_vector"]] <- as.numeric(example_data[["factor_vector"]])
 
-head(example_data)
 ```
 
 When I convert the logical vector data to numeric data, the entries turn into *1s and *0s* which does make sense. It looks like logical data is logged as binary and so that is why in the calculation of the mean for logical data, there was an output of `r mean(pull(example_data, char_vector))`, though the entries in the column looked like categorical data.
